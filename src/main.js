@@ -10,7 +10,7 @@ const id = {
 const ws = new WebSocket(`wss://${config.url}/streaming?i=${config.i}`);
 
 
-async function sendMsg(text, visibility = 'home') {
+async function createNote(text, visibility = 'home') {
     if (!text) return;
     ws.send(JSON.stringify({
         'type': 'api',
@@ -55,7 +55,7 @@ async function addReaction(noteId, reaction) {
     }));
 }
 
-ws.on('open', function open() {
+ws.on('open', function () {
     ws.send(JSON.stringify({
         'type': 'connect',
         'body': {
@@ -65,7 +65,7 @@ ws.on('open', function open() {
     }));
 });
 
-ws.on('message', function incoming(json) {
+ws.on('message', function (json) {
     const data = JSON.parse(json);
     // console.log(data);
 
