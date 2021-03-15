@@ -68,6 +68,7 @@ ws.on('open', function () {
 ws.on('message', function (json) {
     const data = JSON.parse(json);
     // console.log(data);
+    console.log('onMsg');
 
     // homeTimelineにノートが投稿されてBotじゃなかったとき
     if (data.type === 'channel' && data.body.id === id.homeTimeline && data.body.type === 'note' && !data.body.body.user.isBot) {
@@ -98,6 +99,112 @@ ws.on('message', function (json) {
                 }
                 case /まりんとじゃんけん/i.test(msg): {
                     reply(noteId, 'ごめん！まだ整備中なの！ ><');
+                    break;
+                }
+                case /まりん/i.test(msg) && !/‪しまりん|クソまりん|さぶまりん|まりんで|まりんが/i.test(msg): {
+                    switch (true) {
+                        case /ハゲ/i.test(msg): {
+                            addReaction(noteId, '💢');
+                            reply(noteId, '私はハゲてなんかいません！');
+                            break;
+                        }
+                        case /じゃんけんしよ/i.test(msg): {
+                            reply(noteId, 'ごめん！まだ整備中なの！ ><');
+                            break;
+                        }
+                        case /結婚/i.test(msg): {
+                            addReaction(noteId, '💞');
+                            reply(noteId, 'うーん、考えておきます^^;');
+                            break;
+                        }
+                        case /てくるね/i.test(msg): {
+                            reply(noteId, 'いってらっしゃい〜');
+                            break;
+                        }
+                        case /すき|好き|あいし|愛し/i.test(msg): {
+                            addReaction(noteId, '💗');
+                            reply(noteId, 'あ、ありがとうございます///');
+                            break;
+                        }
+                        case /してあげた|した/i.test(msg): {
+                            reply(noteId, 'ありがとう！！(極度感謝)');
+                            break;
+                        }
+                        case /かわいい|可愛い/i.test(msg): {
+                            switch (true) {
+                                case /宇宙一/i.test(msg): {
+                                    addReaction(noteId, '💗');
+                                    reply(noteId, 'そ、そんなことないですよ ///>_</// 💞💞💞💞');
+                                    break;
+                                }
+                                default: {
+                                    reply(noteId, 'ありがとうございます 💞💞');
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                        case /やさしい|優しい/i.test(msg): {
+                            reply(noteId, 'そんなことないですよ〜(\\*^_^*)');
+                            break;
+                        }
+                        case /持ち帰り/i.test(msg) && !/りたくない/i.test(msg): {
+                            reply(noteId, '照れますね...///');
+                            break;
+                        }
+                        case /歳|年齢|才/i.test(msg): {
+                            switch (true) {
+                                case /ナン才|ナン歳|ナンさい/i.test(msg): {
+                                    reply(noteId, 'ナン歳でしょうか？なんちゃって笑');
+                                    break;
+                                }
+                                default: {
+                                    reply(noteId, '私は13歳よ！');
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                        case /草|w|ｗ/i.test(msg): {
+                            reply(noteId, '笑笑');
+                            break;
+                        }
+                        case /まりんちゃんと/i.test(msg): {
+                            reply(noteId, 'まりんと何がしたいって？');
+                            break;
+                        }
+                        default: {
+                            addReaction(noteId, '❓');
+                            reply(noteId, 'どうしたの？');
+                            break;
+                        }
+                    }
+                    break;
+                }
+                case /💩/i.test(msg): {
+                    addReaction(noteId, '💩');
+                    break;
+                }
+                case /PPAP|ペンパイナッポーアッポーペン|Pen Pineapple Apple Pen/i.test(msg): {
+                    addReaction(noteId, '🆖');
+                    reply(noteId, 'PPAPは禁止です！');
+                    break;
+                }
+                case /卍/i.test(msg): {
+                    switch (true) {
+                        case /卍。/i.test(msg): {
+                            reply(noteId, '卍。');
+                            break;
+                        }
+                        case /卍！|卍!/i.test(msg): {
+                            reply(noteId, '卍！');
+                            break;
+                        }
+                    }
+                    break;
+                }
+                case /はい。/i.test(msg) && !/はいい/i.test(msg) && !/はいはい/i.test(msg): {
+                    reply(noteId, 'はい。');
                     break;
                 }
             }
