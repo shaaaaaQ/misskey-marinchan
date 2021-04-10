@@ -27,10 +27,9 @@ ws.on('message', function (json) {
     // console.log('onMsg');
 
     // homeTimelineにノートが投稿されてBotじゃなかったとき
-    if (data.type === 'channel' && data.body.id === id.homeTimeline && data.body.type === 'note' && !data.body.body.user.isBot) {
+    if (data.type === 'channel' && data.body.id === id.homeTimeline && data.body.type === 'note' && !data.body.body.user.isBot && data.body.body.text) {
         const msg = data.body.body.text;
         const noteId = data.body.body.id;
-        console.log(`メッセージを受信 > ${msg}`);
         if (msg) {
             switch (true) {
                 case /卍Hello|起床|ぽき|ぽは|おはよ|はろ|こんにちは|こんばんは/i.test(msg) && !/おはようございません/i.test(msg): {
@@ -169,5 +168,6 @@ ws.on('message', function (json) {
                 }
             }
         }
+        return console.log(`メッセージを受信 > ${msg}`);
     }
 });
