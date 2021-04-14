@@ -4,6 +4,16 @@ class Api {
         this.id = id;
     }
 
+    connectHomeTimeline() {
+        this.ws.send(JSON.stringify({
+            'type': 'connect',
+            'body': {
+                'channel': 'homeTimeline',
+                'id': this.id.homeTimeline
+            }
+        }));
+    }
+
     createNote(text, visibility = 'home') {
         if (!text) return console.log('Error --- api.createNote: 引数が正しくありません');
         this.ws.send(JSON.stringify({
