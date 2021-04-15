@@ -1,27 +1,21 @@
-const WebSocket = require('ws');
-const { v4 } = require('uuid');
 const Api = require('./api');
 const emoji = require('./emoji.json');
 const config = require('../config.json');
 
-const id = {
-    'homeTimeline': v4(),
-    'me': v4()
-};
-const ws = new WebSocket(`wss://${config.url}/streaming?i=${config.i}`);
-const a = new Api(ws, id);
 
-ws.on('open', function () {
+const a = new Api(`wss://${config.url}/streaming?i=${config.i}`);
+
+a.on('open', function () {
     a.connectHomeTimeline();
 });
 
-ws.on('message', function (json) {
+a.on('message', function (json) {
     const data = JSON.parse(json);
     // console.log(data);
     // console.log('onMsg');
 
     // homeTimelineにノートが投稿されてBotじゃなかったとき
-    if (data.type === 'channel' && data.body.id === id.homeTimeline && data.body.type === 'note' && !data.body.body.user.isBot && data.body.body.text) {
+    if (data.type === 'channel' && data.body.id === a.id.homeTimeline && data.body.type === 'note' && !data.body.body.user.isBot && data.body.body.text) {
         const msg = data.body.body.text;
         const noteId = data.body.body.id;
         switch (true) {
