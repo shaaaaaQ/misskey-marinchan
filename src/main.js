@@ -149,8 +149,8 @@ a.on('message', function (json) {
                 a.reply(noteId, 'はい。');
                 break;
             }
-            default: {
-                if (msg === 'お') a.addReaction(noteId, emoji.o);
+            case msg === 'お': {
+                a.addReaction(noteId, emoji.o);
                 break;
             }
         }
