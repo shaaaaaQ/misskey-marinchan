@@ -7,6 +7,7 @@ const a = new Api(`wss://${config.url}/streaming?i=${config.i}`);
 
 a.on('open', function () {
     a.connectHomeTimeline();
+    a.connectMain();
 });
 
 a.on('message', function (json) {
@@ -14,6 +15,13 @@ a.on('message', function (json) {
     // console.log(data);
     // console.log('onMsg');
 
+    // フォローされたとき
+    if (data.type === 'channel' && data.body.id === a.id.main && data.body.type === 'followed') {
+        const userId = data.body.body.id;
+        const username = data.body.body.username;
+        a.follow(userId);
+        console.log(`フォロバ > ${username}`);
+    }
     // homeTimelineにノートが投稿されてBotじゃなかったとき
     if (data.type === 'channel' && data.body.id === a.id.homeTimeline && data.body.type === 'note' && !data.body.body.user.isBot && data.body.body.text) {
         const msg = data.body.body.text;

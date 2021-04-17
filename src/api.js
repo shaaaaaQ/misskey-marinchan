@@ -4,6 +4,7 @@ const { v4 } = require('uuid');
 
 const id = {
     'homeTimeline': v4(),
+    'main': v4(),
     'me': v4()
 };
 
@@ -21,6 +22,16 @@ class Api extends EventEmitter {
         this._ws.on('message', function (json) {
             self.emit('message', json);
         });
+    }
+
+    connectMain() {
+        this._ws.send(JSON.stringify({
+            'type': 'connect',
+            'body': {
+                'channel': 'main',
+                'id': this.id.main
+            }
+        }));
     }
 
     connectHomeTimeline() {
@@ -74,6 +85,20 @@ class Api extends EventEmitter {
                 'data': {
                     'noteId': noteId,
                     'reaction': reaction
+                }
+            }
+        }));
+    }
+
+    follow(userId) {
+        if (!userId) return console.log('Error --- api.follow: 引数が正しくありません');
+        this._ws.send(JSON.stringify({
+            'type': 'api',
+            'body': {
+                'id': this.id.me,
+                'endpoint': 'following/create',
+                'data': {
+                    'userId': userId
                 }
             }
         }));
