@@ -1,5 +1,4 @@
 const Api = require('./api');
-const emoji = require('./emoji.json');
 const config = require('../config.json');
 
 
@@ -20,7 +19,7 @@ a.on('message', function (json) {
         const userId = data.body.body.id;
         const username = data.body.body.username;
         a.follow(userId);
-        console.log(`フォロバ > ${username}`);
+        return console.log(`フォロバ > ${username}`);
     }
     // homeTimelineにノートが投稿されてBotじゃなかったとき
     if (data.type === 'channel' && data.body.id === a.id.homeTimeline && data.body.type === 'note' && !data.body.body.user.isBot && data.body.body.text) {
@@ -157,8 +156,16 @@ a.on('message', function (json) {
                 a.reply(noteId, 'はい。');
                 break;
             }
+            case /:seppuku:/i.test(msg): {
+                a.addReaction(noteId, ':seppuku:');
+                break;
+            }
+            case /RedBull|レッドブル/i.test(msg): {
+                a.addReaction(noteId, ':redbull:');
+                break;
+            }
             case msg === 'お': {
-                a.addReaction(noteId, emoji.o);
+                a.addReaction(noteId, ':o:');
                 break;
             }
         }
