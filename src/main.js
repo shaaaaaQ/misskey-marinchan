@@ -156,12 +156,72 @@ a.on('message', function (json) {
                 a.reply(noteId, 'はい。');
                 break;
             }
-            case /:seppuku:/i.test(msg): {
+            case /seppuku|切腹/i.test(msg): {
                 a.addReaction(noteId, ':seppuku:');
                 break;
             }
             case /RedBull|レッドブル/i.test(msg): {
                 a.addReaction(noteId, ':redbull:');
+                break;
+            }
+            case /chrome/i.test(msg): {
+                a.addReaction(noteId, ':chrome:');
+                break;
+            }
+            case /edge/i.test(msg): {
+                a.addReaction(noteId, ':edge:');
+                break;
+            }
+            case /firefox/i.test(msg): {
+                a.addReaction(noteId, ':firefox:');
+                break;
+            }
+            case /brave/i.test(msg): {
+                a.addReaction(noteId, ':brave:');
+                break;
+            }
+            case /twitter/i.test(msg): {
+                a.addReaction(noteId, ':twitter:');
+                break;
+            }
+            case /misskey/i.test(msg): {
+                a.addReaction(noteId, ':misskey:');
+                break;
+            }
+            case /microsoft/i.test(msg): {
+                a.addReaction(noteId, ':microsoft:');
+                break;
+            }
+            case /ubuntu/i.test(msg): {
+                a.addReaction(noteId, ':ubuntu:');
+                break;
+            }
+            case /safari/i.test(msg): {
+                a.addReaction(noteId, ':safari:');
+                break;
+            }
+            case /windows/i.test(msg): {
+                a.addReaction(noteId, ':windows:');
+                break;
+            }
+            case /xiaomi/i.test(msg): {
+                a.addReaction(noteId, ':xiaomi:');
+                break;
+            }
+            case /youtube/i.test(msg): {
+                a.addReaction(noteId, ':youtube:');
+                break;
+            }
+            case /vivaldi/i.test(msg): {
+                a.addReaction(noteId, ':vivaldi:');
+                break;
+            }
+            case /blender/i.test(msg): {
+                a.addReaction(noteId, ':blender:');
+                break;
+            }
+            case /334/i.test(msg): {
+                a.addReaction(noteId, ':334:');
                 break;
             }
             case msg === 'お': {
