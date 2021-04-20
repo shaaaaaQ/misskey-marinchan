@@ -1,6 +1,4 @@
 module.exports = function (note) {
-    console.log(note);
-
     if (note.user.isBot || !note.text) return;
 
     console.log(`メッセージを受信 > ${note.text}`);

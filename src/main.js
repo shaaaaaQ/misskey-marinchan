@@ -9,12 +9,16 @@ a.on('open', function () {
     a.connectMain();
 });
 
+/*
+a.on('message', function (data) {
+    console.log('-------------------------');
+    console.log(data);
+});
+*/
+
 a.on('homeTimeline', require('./on/homeTimeline'));
 
-a.on('followed', function (data) {
-    const userId = data.body.body.id;
-    const username = data.body.body.username;
-    a.follow(userId);
-
-    console.log(`フォロバ > ${username}`);
+a.on('followed', function (user) {
+    user.follow();
+    console.log(`フォロバ > ${user.username}`);
 });
