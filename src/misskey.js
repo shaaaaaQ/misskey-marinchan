@@ -19,7 +19,8 @@ class Api extends EventEmitter {
 
         this._ws.on('message', function (json) {
             const data = JSON.parse(json);
-            if (data.type === 'channel' && data.body.id === self.id.homeTimeline) return self.emit('homeTimeline', data);
+            //console.log(data);
+            if (data.type === 'channel' && data.body.id === self.id.homeTimeline) return self.emit('homeTimeline', new Note(data, self));
             if (data.type === 'channel' && data.body.id === self.id.main && data.body.type === 'followed') return self.emit('followed', data);
         });
     }
@@ -109,4 +110,26 @@ class Api extends EventEmitter {
     }
 }
 
-module.exports = Api;
+class Note {
+    constructor(data, api) {
+        this.api = api;
+        this.id = data.body.body.id;
+        this.createdAt = data.body.body.createdAt;
+        this.user = data.body.body.user;
+        this.text = data.body.body.text;
+        this.cw = data.body.body.cw;
+        this.visibility = data.body.body.visibility;
+    }
+
+    reply(text, visibility = 'home') {
+        this.api.reply(this.id, text, visibility);
+    }
+
+    addReaction(reaction) {
+        this.api.addReaction(this.id, reaction);
+    }
+}
+
+module.exports = {
+    Api: Api
+};
