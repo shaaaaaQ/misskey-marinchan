@@ -20,7 +20,7 @@ class Api extends EventEmitter {
         this._ws.on('message', function (json) {
             const data = JSON.parse(json);
             self.emit('message', data);
-            if (data.type === 'channel' && data.body.id === self.id.homeTimeline) return self.emit('homeTimeline', new Note(data, self));
+            if (data.type === 'channel' && data.body.id === self.id.homeTimeline) return self.emit('homeTimeline', new Note(data.body.body, self));
             if (data.type === 'channel' && data.body.id === self.id.main && data.body.type === 'followed') return self.emit('followed', new User(data.body.body, self));
         });
     }
@@ -113,12 +113,13 @@ class Api extends EventEmitter {
 class Note {
     constructor(data, api) {
         this.api = api;
-        this.id = data.body.body.id;
-        this.createdAt = data.body.body.createdAt;
-        this.user = new User(data.body.body.user, api);
-        this.text = data.body.body.text;
-        this.cw = data.body.body.cw;
-        this.visibility = data.body.body.visibility;
+        this.id = data.id;
+        this.createdAt = data.createdAt;
+        this.user = new User(data.user, api);
+        this.text = data.text;
+        this.cw = data.cw;
+        this.visibility = data.visibility;
+        this.parent = data.reply && new Note(data.reply, api);
     }
 
     reply(text, visibility = 'home') {
