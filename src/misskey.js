@@ -3,10 +3,16 @@ const WebSocket = require('ws');
 const { v4 } = require('uuid');
 
 class Api extends EventEmitter {
-    constructor(p) {
+    constructor(address) {
         super();
+        this.address = address;
+    }
+
+    run() {
+        if ('_ws' in this) return console.log('えらー(Api.run)');
+
         var self = this;
-        this._ws = new WebSocket(p);
+        this._ws = new WebSocket(this.address);
         this.id = {
             'homeTimeline': v4(),
             'main': v4(),
