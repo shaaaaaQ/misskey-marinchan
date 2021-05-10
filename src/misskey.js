@@ -22,6 +22,7 @@ class Api extends EventEmitter {
             self.emit('message', data);
             if (data.type === 'channel' && data.body.id === self.id.homeTimeline) return self.emit('homeTimeline', new Note(data.body.body, self));
             if (data.type === 'channel' && data.body.id === self.id.main && data.body.type === 'followed') return self.emit('followed', new User(data.body.body, self));
+            if (data.type === 'channel' && data.body.id === self.id.main && data.body.type === 'mention') return self.emit('mention', new Note(data.body.body, self));
         });
     }
 
