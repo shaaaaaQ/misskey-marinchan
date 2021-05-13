@@ -28,7 +28,7 @@ module.exports = function (note) {
             note.reply('ごめん！まだ整備中なの！ ><');
             break;
         }
-        case /まりん/i.test(note.text) && !/‪しまりん|クソまりん|さぶまりん|まりんで|まりんが/i.test(note.text): {
+        case /まりん/i.test(note.text) && !/しまりん|クソまりん|さぶまりん/i.test(note.text): {
             switch (true) {
                 case /ハゲ/i.test(note.text): {
                     note.addReaction('💢');
@@ -92,7 +92,7 @@ module.exports = function (note) {
                     }
                     break;
                 }
-                case /草|w|ｗ/i.test(note.text): {
+                case /草/i.test(note.text): {
                     note.reply('笑笑');
                     break;
                 }
@@ -130,7 +130,7 @@ module.exports = function (note) {
             }
             break;
         }
-        case /はい。/i.test(note.text) && !/はいい/i.test(note.text) && !/はいはい/i.test(note.text): {
+        case /はい。/i.test(note.text) && !/はいい|はいはい/i.test(note.text): {
             note.reply('はい。');
             break;
         }
