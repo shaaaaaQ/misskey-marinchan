@@ -9,7 +9,7 @@ class Api extends EventEmitter {
     }
 
     run() {
-        if ('_ws' in this) return console.log('えらー(Api.run)');
+        if ('_ws' in this) return;
 
         var self = this;
         this._ws = new WebSocket(this.address);
@@ -26,9 +26,11 @@ class Api extends EventEmitter {
         this._ws.on('message', function (json) {
             const data = JSON.parse(json);
             self.emit('message', data);
-            if (data.type === 'channel' && data.body.id === self.id.homeTimeline) return self.emit('homeTimeline', new Note(data.body.body, self));
-            if (data.type === 'channel' && data.body.id === self.id.main && data.body.type === 'followed') return self.emit('followed', new User(data.body.body, self));
-            if (data.type === 'channel' && data.body.id === self.id.main && data.body.type === 'mention') return self.emit('mention', new Note(data.body.body, self));
+            if (data.body && data.body.id === self.id.homeTimeline) return self.emit('homeTimeline', new Note(data.body.body, self));
+            if (data.body && data.body.id === self.id.main && data.body.type === 'followed') return self.emit('followed', new User(data.body.body, self));
+            if (data.body && data.body.id === self.id.main && data.body.type === 'mention') return self.emit('mention', new Note(data.body.body, self));
+            if (data.body && data.body.id === self.id.main && data.body.type === 'reply') return self.emit('reply', new Note(data.body.body, self));
+            if (data.body && data.body.error) return self.emit('error', data.body.error.message);
         });
     }
 
@@ -57,7 +59,6 @@ class Api extends EventEmitter {
     }
 
     createNote(text, visibility = 'home') {
-        if (!text) return console.log('Error --- api.createNote: 引数が正しくありません');
         this.send({
             type: 'api',
             body: {
@@ -71,8 +72,7 @@ class Api extends EventEmitter {
         });
     }
 
-    reply(replyId, text, visibility = 'home') {
-        if (!text || !replyId) return console.log('Error --- api.reply: 引数が正しくありません');
+    createReply(replyId, text, visibility = 'home') {
         this.send({
             type: 'api',
             body: {
@@ -88,7 +88,6 @@ class Api extends EventEmitter {
     }
 
     addReaction(noteId, reaction) {
-        if (!noteId || !reaction) return console.log('Error --- api.addReaction: 引数が正しくありません');
         this.send({
             type: 'api',
             body: {
@@ -103,7 +102,6 @@ class Api extends EventEmitter {
     }
 
     follow(userId) {
-        if (!userId) return console.log('Error --- api.follow: 引数が正しくありません');
         this.send({
             type: 'api',
             body: {
@@ -130,7 +128,7 @@ class Note {
     }
 
     reply(text, visibility = 'home') {
-        this.api.reply(this.id, text, visibility);
+        this.api.createReply(this.id, text, visibility);
     }
 
     addReaction(reaction) {
