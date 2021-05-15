@@ -1,23 +1,21 @@
 const { EventEmitter } = require('events');
 const WebSocket = require('ws');
+const axios = require('axios');
 const { v4 } = require('uuid');
 
 class Api extends EventEmitter {
-    constructor(address) {
+    constructor(url, i) {
         super();
-        this.address = address;
+        this.url = url;
+        this.i = i;
     }
 
     run() {
         if ('_ws' in this) return;
 
         var self = this;
-        this._ws = new WebSocket(this.address);
-        this.id = {
-            'homeTimeline': v4(),
-            'main': v4(),
-            'me': v4()
-        };
+        this._ws = new WebSocket(`${self.url.replace('http', 'ws')}/streaming?i=${self.i}`);
+        this.id = {};
 
         this._ws.on('open', function () {
             self.emit('open');
@@ -30,87 +28,59 @@ class Api extends EventEmitter {
             if (data.body && data.body.id === self.id.main && data.body.type === 'followed') return self.emit('followed', new User(data.body.body, self));
             if (data.body && data.body.id === self.id.main && data.body.type === 'mention') return self.emit('mention', new Note(data.body.body, self));
             if (data.body && data.body.id === self.id.main && data.body.type === 'reply') return self.emit('reply', new Note(data.body.body, self));
-            if (data.body && data.body.error) return self.emit('error', data.body.error.message);
+            if (data.body && data.body.error) return self.emit('error', data.body.error);
         });
     }
 
-    send(payload) {
-        this._ws.send(JSON.stringify(payload));
+    async post(endpoint, params) {
+        let res;
+        try {
+            res = await axios.post(`${this.url}/api/${endpoint}`, {
+                i: this.i,
+                ...params
+            });
+        } catch (err) {
+            res = err.response;
+        }
+        return res.data;
     }
 
-    connectMain() {
-        this.send({
+    connect(channel) {
+        this.id[channel] = v4();
+        this._ws.send(JSON.stringify({
             type: 'connect',
             body: {
-                channel: 'main',
-                id: this.id.main
+                channel: channel,
+                id: this.id[channel]
             }
-        });
-    }
-
-    connectHomeTimeline() {
-        this.send({
-            type: 'connect',
-            body: {
-                channel: 'homeTimeline',
-                id: this.id.homeTimeline
-            }
-        });
+        }));
     }
 
     createNote(text, visibility = 'home') {
-        this.send({
-            type: 'api',
-            body: {
-                id: this.id.me,
-                endpoint: 'notes/create',
-                data: {
-                    text: text,
-                    visibility: visibility
-                }
-            }
+        return this.post('notes/create', {
+            text: text,
+            visibility: visibility
         });
     }
 
     createReply(replyId, text, visibility = 'home') {
-        this.send({
-            type: 'api',
-            body: {
-                id: this.id.me,
-                endpoint: 'notes/create',
-                data: {
-                    text: text,
-                    visibility: visibility,
-                    replyId: replyId
-                }
-            }
+        return this.post('notes/create', {
+            text: text,
+            visibility: visibility,
+            replyId: replyId
         });
     }
 
     addReaction(noteId, reaction) {
-        this.send({
-            type: 'api',
-            body: {
-                id: this.id.me,
-                endpoint: 'notes/reactions/create',
-                data: {
-                    noteId: noteId,
-                    reaction: reaction
-                }
-            }
+        return this.post('notes/reactions/create', {
+            noteId: noteId,
+            reaction: reaction
         });
     }
 
     follow(userId) {
-        this.send({
-            type: 'api',
-            body: {
-                id: this.id.me,
-                endpoint: 'following/create',
-                data: {
-                    userId: userId
-                }
-            }
+        return this.post('following/create', {
+            userId: userId
         });
     }
 }

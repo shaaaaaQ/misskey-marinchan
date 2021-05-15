@@ -2,9 +2,10 @@
 ここから下はメモ
 
 #### 設定
+./config.json
 ```json
 {
     "i": "",
-    "url": "msk.seppuku.club"
+    "url": "https://msk.seppuku.club"
 }
 ```
