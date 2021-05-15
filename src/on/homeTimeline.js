@@ -4,6 +4,12 @@ module.exports = function (note) {
     console.log(`メッセージを受信 > ${note.text}`);
 
     switch (true) {
+        case /ping/i.test(note.text): {
+            const createdAt = new Date(note.createdAt);
+            const diffMillis = Date.now() - createdAt.getTime();
+            note.reply(`pong (${diffMillis}ms)`);
+            break;
+        }
         case /卍Hello|起床|ぽき|ぽは|おはよ|はろ|こんにちは|こんばんは/i.test(note.text) && !/おはようございません/i.test(note.text): {
             const hour = new Date().getHours();
             switch (true) {
