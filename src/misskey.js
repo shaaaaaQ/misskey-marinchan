@@ -42,7 +42,14 @@ class Api extends EventEmitter {
         } catch (err) {
             res = err.response;
         }
-        return res.data;
+        if (!res.data) return;
+        const data = res.data;
+        if (data.error) return data;
+        switch (endpoint) {
+            case 'notes/create': return new Note(data.createdNote, this);
+            case 'following/create': return new User(data, this);
+            default: return res.data;
+        }
     }
 
     connect(channel) {
@@ -54,34 +61,6 @@ class Api extends EventEmitter {
                 id: this.id[channel]
             }
         }));
-    }
-
-    createNote(text, visibility = 'home') {
-        return this.post('notes/create', {
-            text: text,
-            visibility: visibility
-        });
-    }
-
-    createReply(replyId, text, visibility = 'home') {
-        return this.post('notes/create', {
-            text: text,
-            visibility: visibility,
-            replyId: replyId
-        });
-    }
-
-    addReaction(noteId, reaction) {
-        return this.post('notes/reactions/create', {
-            noteId: noteId,
-            reaction: reaction
-        });
-    }
-
-    follow(userId) {
-        return this.post('following/create', {
-            userId: userId
-        });
     }
 }
 
@@ -97,12 +76,20 @@ class Note {
         this.parent = data.reply && new Note(data.reply, api);
     }
 
-    reply(text, visibility = 'home') {
-        this.api.createReply(this.id, text, visibility);
+    reply(text, params) {
+        return this.api.post('notes/create', {
+            text: text,
+            replyId: this.id,
+            ...params
+        });
     }
 
-    addReaction(reaction) {
-        this.api.addReaction(this.id, reaction);
+    react(reaction, params) {
+        return this.api.post('notes/reactions/create', {
+            noteId: this.id,
+            reaction: reaction,
+            ...params
+        });
     }
 }
 
@@ -119,7 +106,9 @@ class User {
     }
 
     follow() {
-        this.api.follow(this.id);
+        return this.api.post('following/create', {
+            userId: this.id
+        });
     }
 }
 

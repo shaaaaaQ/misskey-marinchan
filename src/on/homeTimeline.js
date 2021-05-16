@@ -26,7 +26,7 @@ module.exports = function (note) {
             break;
         }
         case /おやすみ|寝る|ぽや/i.test(note.text): {
-            note.addReaction('😴');
+            note.react('😴');
             note.reply('おやすみ〜〜');
             break;
         }
@@ -37,7 +37,7 @@ module.exports = function (note) {
         case /まりん/i.test(note.text) && !/しまりん|クソまりん|さぶまりん/i.test(note.text): {
             switch (true) {
                 case /ハゲ/i.test(note.text): {
-                    note.addReaction('💢');
+                    note.react('💢');
                     note.reply('私はハゲてなんかいません！');
                     break;
                 }
@@ -46,7 +46,7 @@ module.exports = function (note) {
                     break;
                 }
                 case /結婚/i.test(note.text): {
-                    note.addReaction('💞');
+                    note.react('💞');
                     note.reply('うーん、考えておきます^^;');
                     break;
                 }
@@ -55,7 +55,7 @@ module.exports = function (note) {
                     break;
                 }
                 case /すき|好き|あいし|愛し/i.test(note.text): {
-                    note.addReaction('💗');
+                    note.react('💗');
                     note.reply('あ、ありがとうございます///');
                     break;
                 }
@@ -66,7 +66,7 @@ module.exports = function (note) {
                 case /かわいい|可愛い/i.test(note.text): {
                     switch (true) {
                         case /宇宙一/i.test(note.text): {
-                            note.addReaction('💗');
+                            note.react('💗');
                             note.reply('そ、そんなことないですよ ///>_</// 💞💞💞💞');
                             break;
                         }
@@ -107,7 +107,7 @@ module.exports = function (note) {
                     break;
                 }
                 default: {
-                    note.addReaction('❓');
+                    note.react('❓');
                     note.reply('どうしたの？');
                     break;
                 }
@@ -115,11 +115,11 @@ module.exports = function (note) {
             break;
         }
         case /💩/i.test(note.text): {
-            note.addReaction('💩');
+            note.react('💩');
             break;
         }
         case /PPAP|ペンパイナッポーアッポーペン|Pen Pineapple Apple Pen/i.test(note.text): {
-            note.addReaction('🆖');
+            note.react('🆖');
             note.reply('PPAPは禁止です！');
             break;
         }
@@ -141,75 +141,75 @@ module.exports = function (note) {
             break;
         }
         case /seppuku|切腹/i.test(note.text): {
-            note.addReaction(':seppuku:');
+            note.react(':seppuku:');
             break;
         }
         case /RedBull|レッドブル/i.test(note.text): {
-            note.addReaction(':redbull:');
+            note.react(':redbull:');
             break;
         }
         case /chrome/i.test(note.text): {
-            note.addReaction(':chrome:');
+            note.react(':chrome:');
             break;
         }
         case /edge/i.test(note.text): {
-            note.addReaction(':edge:');
+            note.react(':edge:');
             break;
         }
         case /firefox/i.test(note.text): {
-            note.addReaction(':firefox:');
+            note.react(':firefox:');
             break;
         }
         case /brave/i.test(note.text): {
-            note.addReaction(':brave:');
+            note.react(':brave:');
             break;
         }
         case /twitter/i.test(note.text): {
-            note.addReaction(':twitter:');
+            note.react(':twitter:');
             break;
         }
         case /misskey/i.test(note.text): {
-            note.addReaction(':misskey:');
+            note.react(':misskey:');
             break;
         }
         case /microsoft/i.test(note.text): {
-            note.addReaction(':microsoft:');
+            note.react(':microsoft:');
             break;
         }
         case /ubuntu/i.test(note.text): {
-            note.addReaction(':ubuntu:');
+            note.react(':ubuntu:');
             break;
         }
         case /safari/i.test(note.text): {
-            note.addReaction(':safari:');
+            note.react(':safari:');
             break;
         }
         case /windows/i.test(note.text): {
-            note.addReaction(':windows:');
+            note.react(':windows:');
             break;
         }
         case /xiaomi/i.test(note.text): {
-            note.addReaction(':xiaomi:');
+            note.react(':xiaomi:');
             break;
         }
         case /youtube/i.test(note.text): {
-            note.addReaction(':youtube:');
+            note.react(':youtube:');
             break;
         }
         case /vivaldi/i.test(note.text): {
-            note.addReaction(':vivaldi:');
+            note.react(':vivaldi:');
             break;
         }
         case /blender/i.test(note.text): {
-            note.addReaction(':blender:');
+            note.react(':blender:');
             break;
         }
         case /334/i.test(note.text): {
-            note.addReaction(':334:');
+            note.react(':334:');
             break;
         }
         case note.text === 'お': {
-            note.addReaction(':o:');
+            note.react(':o:');
             break;
         }
     }
