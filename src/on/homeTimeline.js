@@ -1,4 +1,8 @@
-module.exports = function (note) {
+const { Note } = require('../misskey');
+
+module.exports = function (data) {
+    const note = new Note(this, data);
+
     if (note.user.isBot || !note.text) return;
 
     console.log(`メッセージを受信 > ${note.text}`);
@@ -7,108 +11,108 @@ module.exports = function (note) {
         case /ping/i.test(note.text): {
             const createdAt = new Date(note.createdAt);
             const diffMillis = Date.now() - createdAt.getTime();
-            note.reply(`pong (${diffMillis}ms)`);
+            note.reply({ text: `pong (${diffMillis}ms)` });
             break;
         }
         case /卍Hello|起床|ぽき|ぽは|おはよ|はろ|こんにちは|こんばんは/i.test(note.text) && !/おはようございません/i.test(note.text): {
             const hour = new Date().getHours();
             switch (true) {
                 case 4 <= hour && hour < 11:
-                    note.reply('おはようございます…むにゃむにゃ……');
+                    note.reply({ text: 'おはようございます…むにゃむにゃ……' });
                     break;
                 case 11 <= hour && hour < 18:
-                    note.reply('こんにちは！(\\*^_^*)');
+                    note.reply({ text: 'こんにちは！(\\*^_^*)' });
                     break;
                 case 18 <= hour || hour < 4:
-                    note.reply('こんばんは〜(\\*^_^*)');
+                    note.reply({ text: 'こんばんは〜(\\*^_^*)' });
                     break;
             }
             break;
         }
         case /おやすみ|寝る|ぽや/i.test(note.text): {
             note.react('😴');
-            note.reply('おやすみ〜〜');
+            note.reply({ text: 'おやすみ〜〜' });
             break;
         }
         case /まりんとじゃんけん/i.test(note.text): {
-            note.reply('ごめん！まだ整備中なの！ ><');
+            note.reply({ text: 'ごめん！まだ整備中なの！ ><' });
             break;
         }
         case /まりん/i.test(note.text) && !/しまりん|クソまりん|さぶまりん/i.test(note.text): {
             switch (true) {
                 case /ハゲ/i.test(note.text): {
                     note.react('💢');
-                    note.reply('私はハゲてなんかいません！');
+                    note.reply({ text: '私はハゲてなんかいません！' });
                     break;
                 }
                 case /じゃんけんしよ/i.test(note.text): {
-                    note.reply('ごめん！まだ整備中なの！ ><');
+                    note.reply({ text: 'ごめん！まだ整備中なの！ ><' });
                     break;
                 }
                 case /結婚/i.test(note.text): {
                     note.react('💞');
-                    note.reply('うーん、考えておきます^^;');
+                    note.reply({ text: 'うーん、考えておきます^^;' });
                     break;
                 }
                 case /てくるね/i.test(note.text): {
-                    note.reply('いってらっしゃい〜');
+                    note.reply({ text: 'いってらっしゃい〜' });
                     break;
                 }
                 case /すき|好き|あいし|愛し/i.test(note.text): {
                     note.react('💗');
-                    note.reply('あ、ありがとうございます///');
+                    note.reply({ text: 'あ、ありがとうございます///' });
                     break;
                 }
                 case /してあげた|した/i.test(note.text): {
-                    note.reply('ありがとう！！(極度感謝)');
+                    note.reply({ text: 'ありがとう！！(極度感謝)' });
                     break;
                 }
                 case /かわいい|可愛い/i.test(note.text): {
                     switch (true) {
                         case /宇宙一/i.test(note.text): {
                             note.react('💗');
-                            note.reply('そ、そんなことないですよ ///>_</// 💞💞💞💞');
+                            note.reply({ text: 'そ、そんなことないですよ ///>_</// 💞💞💞💞' });
                             break;
                         }
                         default: {
-                            note.reply('ありがとうございます 💞💞');
+                            note.reply({ text: 'ありがとうございます 💞💞' });
                             break;
                         }
                     }
                     break;
                 }
                 case /やさしい|優しい/i.test(note.text): {
-                    note.reply('そんなことないですよ〜(\\*^_^*)');
+                    note.reply({ text: 'そんなことないですよ〜(\\*^_^*)' });
                     break;
                 }
                 case /持ち帰り/i.test(note.text) && !/りたくない/i.test(note.text): {
-                    note.reply('照れますね...///');
+                    note.reply({ text: '照れますね...///' });
                     break;
                 }
                 case /歳|年齢|才/i.test(note.text): {
                     switch (true) {
                         case /ナン才|ナン歳|ナンさい/i.test(note.text): {
-                            note.reply('ナン歳でしょうか？なんちゃって笑');
+                            note.reply({ text: 'ナン歳でしょうか？なんちゃって笑' });
                             break;
                         }
                         default: {
-                            note.reply('私は13歳よ！');
+                            note.reply({ text: '私は13歳よ！' });
                             break;
                         }
                     }
                     break;
                 }
                 case /草/i.test(note.text): {
-                    note.reply('笑笑');
+                    note.reply({ text: '笑笑' });
                     break;
                 }
                 case /まりんちゃんと/i.test(note.text): {
-                    note.reply('まりんと何がしたいって？');
+                    note.reply({ text: 'まりんと何がしたいって？' });
                     break;
                 }
                 default: {
                     note.react('❓');
-                    note.reply('どうしたの？');
+                    note.reply({ text: 'どうしたの？' });
                     break;
                 }
             }
@@ -120,24 +124,24 @@ module.exports = function (note) {
         }
         case /PPAP|ペンパイナッポーアッポーペン|Pen Pineapple Apple Pen/i.test(note.text): {
             note.react('🆖');
-            note.reply('PPAPは禁止です！');
+            note.reply({ text: 'PPAPは禁止です！' });
             break;
         }
         case /卍/i.test(note.text): {
             switch (true) {
                 case /卍。/i.test(note.text): {
-                    note.reply('卍。');
+                    note.reply({ text: '卍。' });
                     break;
                 }
                 case /卍！|卍!/i.test(note.text): {
-                    note.reply('卍！');
+                    note.reply({ text: '卍！' });
                     break;
                 }
             }
             break;
         }
         case /はい。/i.test(note.text) && !/はいい|はいはい/i.test(note.text): {
-            note.reply('はい。');
+            note.reply({ text: 'はい。' });
             break;
         }
         case /seppuku|切腹/i.test(note.text): {

@@ -13,47 +13,40 @@ class Api extends EventEmitter {
     run() {
         if ('_ws' in this) return;
 
-        var self = this;
-        this._ws = new WebSocket(`${self.url.replace('http', 'ws')}/streaming?i=${self.i}`);
-        this.id = {};
+        this._ws = new WebSocket(`${this.url.replace('http', 'ws')}/streaming?i=${this.i}`);
+        this.id = {
+            homeTimeline: v4(),
+            main: v4()
+        };
 
-        this._ws.on('open', function () {
-            self.emit('open');
+        this._ws.on('open', () => {
+            this.emit('open');
         });
 
-        this._ws.on('message', function (json) {
+        this._ws.on('message', (json) => {
             const data = JSON.parse(json);
-            self.emit('message', data);
-            if (data.body && data.body.id === self.id.homeTimeline) return self.emit('homeTimeline', new Note(data.body.body, self));
-            if (data.body && data.body.id === self.id.main && data.body.type === 'followed') return self.emit('followed', new User(data.body.body, self));
-            if (data.body && data.body.id === self.id.main && data.body.type === 'mention') return self.emit('mention', new Note(data.body.body, self));
-            if (data.body && data.body.id === self.id.main && data.body.type === 'reply') return self.emit('reply', new Note(data.body.body, self));
-            if (data.body && data.body.error) return self.emit('error', data.body.error);
+            this.emit('message', data);
+            if (!data.body) return;
+            if (data.body.error) return this.emit('error', data.body.error);
+            if (data.type === 'channel') {
+                switch (data.body.id) {
+                    case this.id.homeTimeline: return this.emit('homeTimeline', data.body.body);
+                    case this.id.main: return this.emit(data.body.type, data.body.body);
+                }
+            }
         });
     }
 
-    async post(endpoint, params) {
-        let res;
-        try {
-            res = await axios.post(`${this.url}/api/${endpoint}`, {
-                i: this.i,
-                ...params
-            });
-        } catch (err) {
-            res = err.response;
-        }
-        if (!res.data) return;
-        const data = res.data;
-        if (data.error) return data;
-        switch (endpoint) {
-            case 'notes/create': return new Note(data.createdNote, this);
-            case 'following/create': return new User(data, this);
-            default: return res.data;
-        }
+    post(endpoint, params) {
+        return axios.post(`${this.url}/api/${endpoint}`, {
+            i: this.i,
+            ...params
+        })
+            .then((res) => { return res.data; })
+            .catch((err) => { return err.response.data; });
     }
 
     connect(channel) {
-        this.id[channel] = v4();
         this._ws.send(JSON.stringify({
             type: 'connect',
             body: {
@@ -65,36 +58,34 @@ class Api extends EventEmitter {
 }
 
 class Note {
-    constructor(data, api) {
+    constructor(api, data) {
         this.api = api;
         this.id = data.id;
         this.createdAt = data.createdAt;
-        this.user = new User(data.user, api);
+        this.user = new User(api, data.user);
         this.text = data.text;
         this.cw = data.cw;
         this.visibility = data.visibility;
-        this.parent = data.reply && new Note(data.reply, api);
+        this.parent = data.reply && new Note(api, data.reply);
     }
 
-    reply(text, params) {
+    reply(params) {
         return this.api.post('notes/create', {
-            text: text,
             replyId: this.id,
             ...params
         });
     }
 
-    react(reaction, params) {
+    react(reaction) {
         return this.api.post('notes/reactions/create', {
             noteId: this.id,
-            reaction: reaction,
-            ...params
+            reaction: reaction
         });
     }
 }
 
 class User {
-    constructor(data, api) {
+    constructor(api, data) {
         this.api = api;
         this.id = data.id;
         this.name = data.name;
@@ -113,5 +104,7 @@ class User {
 }
 
 module.exports = {
-    Api: Api
+    Api: Api,
+    Note: Note,
+    User: User
 };
