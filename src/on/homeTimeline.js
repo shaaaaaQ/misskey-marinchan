@@ -9,8 +9,7 @@ module.exports = function (data) {
 
     switch (true) {
         case /ping/i.test(note.text): {
-            const createdAt = new Date(note.createdAt);
-            const diffMillis = Date.now() - createdAt.getTime();
+            const diffMillis = Date.now() - note.createdAt.getTime();
             note.reply({ text: `pong (${diffMillis}ms)` });
             break;
         }

@@ -60,24 +60,37 @@ class Api extends EventEmitter {
 class Note {
     constructor(api, data) {
         this.api = api;
-        this.id = data.id;
-        this.createdAt = data.createdAt;
-        this.user = new User(api, data.user);
-        this.text = data.text;
-        this.cw = data.cw;
-        this.visibility = data.visibility;
-        this.parent = data.reply && new Note(api, data.reply);
+        this.data = data;
+
+        if (data) {
+            this.id = data.id;
+            this.text = data.text;
+            this.cw = data.cw;
+            this.visibility = data.visibility;
+        }
+    }
+
+    get user() {
+        return this.data && this.data.user && new User(this.api, this.data.user);
+    }
+
+    get createdAt() {
+        return this.data.createdAt && new Date(this.data.createdAt);
+    }
+
+    get parent() {
+        return this.data && this.data.user && new Note(this.api, this.data.reply);
     }
 
     reply(params) {
-        return this.api.post('notes/create', {
+        if (this.api) return this.api.post('notes/create', {
             replyId: this.id,
             ...params
         });
     }
 
     react(reaction) {
-        return this.api.post('notes/reactions/create', {
+        if (this.api) return this.api.post('notes/reactions/create', {
             noteId: this.id,
             reaction: reaction
         });
@@ -87,17 +100,21 @@ class Note {
 class User {
     constructor(api, data) {
         this.api = api;
-        this.id = data.id;
-        this.name = data.name;
-        this.username = data.username;
-        this.avatarUrl = data.avatarUrl;
-        this.isModerator = data.isModerator;
-        this.isBot = data.isBot;
-        this.isCat = data.isCat;
+        this.data = data;
+
+        if (data) {
+            this.id = data.id;
+            this.name = data.name;
+            this.username = data.username;
+            this.avatarUrl = data.avatarUrl;
+            this.isModerator = data.isModerator;
+            this.isBot = data.isBot;
+            this.isCat = data.isCat;
+        }
     }
 
     follow() {
-        return this.api.post('following/create', {
+        if (this.api) return this.api.post('following/create', {
             userId: this.id
         });
     }
