@@ -75,11 +75,11 @@ class Note {
     }
 
     get createdAt() {
-        return this.data.createdAt && new Date(this.data.createdAt);
+        return this.data && this.data.createdAt && new Date(this.data.createdAt);
     }
 
     get parent() {
-        return this.data && this.data.user && new Note(this.api, this.data.reply);
+        return this.data && this.data.reply && new Note(this.api, this.data.reply);
     }
 
     reply(params) {
