@@ -43,7 +43,7 @@ class Api extends EventEmitter {
             ...params
         })
             .then((res) => { return res.data; })
-            .catch((err) => { return err.response.data; });
+            .catch(() => { return; });
     }
 
     connect(channel) {
@@ -82,6 +82,13 @@ class Note {
         return this.data && this.data.reply && new Note(this.api, this.data.reply);
     }
 
+    renote(params) {
+        if (this.api) return this.api.post('notes/create', {
+            renoteId: this.id,
+            ...params
+        });
+    }
+
     reply(params) {
         if (this.api) return this.api.post('notes/create', {
             replyId: this.id,
@@ -89,10 +96,22 @@ class Note {
         });
     }
 
+    delete() {
+        if (this.api) return this.api.post('notes/delete', {
+            noteId: this.id
+        });
+    }
+
     react(reaction) {
         if (this.api) return this.api.post('notes/reactions/create', {
             noteId: this.id,
             reaction: reaction
+        });
+    }
+
+    deleteReact() {
+        if (this.api) return this.api.post('notes/reactions/delete', {
+            noteId: this.id
         });
     }
 }
@@ -115,6 +134,12 @@ class User {
 
     follow() {
         if (this.api) return this.api.post('following/create', {
+            userId: this.id
+        });
+    }
+
+    deleteFollow() {
+        if (this.api) return this.api.post('following/delete', {
             userId: this.id
         });
     }
