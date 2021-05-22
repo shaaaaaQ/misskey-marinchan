@@ -213,6 +213,7 @@ module.exports = function (data) {
         }
         case note.text === 'お': {
             note.react(':o:');
+            if (Math.floor(Math.random() * 10) === 0) note.renote();
             break;
         }
     }
