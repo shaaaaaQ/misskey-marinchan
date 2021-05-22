@@ -216,5 +216,13 @@ module.exports = function (data) {
             if (Math.floor(Math.random() * 10) === 0) note.renote();
             break;
         }
+        case note.text === 'うう': {
+            note.react(':rara:');
+            break;
+        }
+        case note.text === 'ララ': {
+            note.react(':uu:');
+            break;
+        }
     }
 };
