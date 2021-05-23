@@ -78,41 +78,45 @@ class Note {
         return this.data && this.data.createdAt && new Date(this.data.createdAt);
     }
 
-    get parent() {
-        return this.data && this.data.reply && new Note(this.api, this.data.reply);
+    get channel() {
+        return this.data && this.data.channel && this.data.channel.id && this._getChannel();
     }
 
     renote(params) {
-        if (this.api) return this.api.post('notes/create', {
+        return this.api.post('notes/create', {
             renoteId: this.id,
             ...params
         });
     }
 
     reply(params) {
-        if (this.api) return this.api.post('notes/create', {
+        return this.api.post('notes/create', {
             replyId: this.id,
             ...params
         });
     }
 
     delete() {
-        if (this.api) return this.api.post('notes/delete', {
+        return this.api.post('notes/delete', {
             noteId: this.id
         });
     }
 
     react(reaction) {
-        if (this.api) return this.api.post('notes/reactions/create', {
+        return this.api.post('notes/reactions/create', {
             noteId: this.id,
             reaction: reaction
         });
     }
 
     deleteReact() {
-        if (this.api) return this.api.post('notes/reactions/delete', {
+        return this.api.post('notes/reactions/delete', {
             noteId: this.id
         });
+    }
+
+    async _getChannel() {
+        return new Channel(this.api, await this.api.post('channels/show', { channelId: this.data.channel.id }));
     }
 }
 
@@ -133,14 +137,38 @@ class User {
     }
 
     follow() {
-        if (this.api) return this.api.post('following/create', {
+        return this.api.post('following/create', {
             userId: this.id
         });
     }
 
     deleteFollow() {
-        if (this.api) return this.api.post('following/delete', {
+        return this.api.post('following/delete', {
             userId: this.id
+        });
+    }
+}
+
+class Channel {
+    constructor(api, data) {
+        this.api = api;
+        this.data = data;
+
+        if (data) {
+            this.id = data.id;
+            this.name = data.name;
+            this.description = data.description;
+            this.bannerUrl = data.bannerUrl;
+            this.notesCount = data.notesCount;
+            this.usersCount = data.usersCount;
+            this.isFollowing = data.isFollowing;
+            this.userId = data.userId;
+        }
+    }
+
+    follow() {
+        return this.api.post('channels/follow', {
+            channelId: this.id
         });
     }
 }
@@ -148,5 +176,6 @@ class User {
 module.exports = {
     Api: Api,
     Note: Note,
-    User: User
+    User: User,
+    Channel: Channel
 };

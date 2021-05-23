@@ -13,7 +13,7 @@ module.exports = function (data) {
             note.reply({ text: `pong (${diffMillis}ms)` });
             break;
         }
-        case /卍Hello|起床|ぽき|ぽは|おはよ|はろ|こんにちは|こんばんは/i.test(note.text) && !/おはようございません/i.test(note.text): {
+        case /起床|ぽき|ぽは|おはよ|はろ|こんにちは|こんばんは/i.test(note.text) && !/おはようございません/i.test(note.text): {
             const hour = new Date().getHours();
             switch (true) {
                 case 4 <= hour && hour < 11:
