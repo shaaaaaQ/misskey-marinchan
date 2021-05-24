@@ -5,7 +5,7 @@ module.exports = function (data) {
 
     if (note.user.isBot || !note.text) return;
 
-    console.log(`メッセージを受信 > ${note.text}`);
+    console.log(`ノートを受信 > ${note.text}`);
 
     switch (true) {
         case /ping/i.test(note.text): {

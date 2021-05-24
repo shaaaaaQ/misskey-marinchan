@@ -1,5 +1,11 @@
 module.exports = async function () {
     this.connect('homeTimeline');
     this.connect('main');
-    console.log('起動');
+    const i = await this.post('i');
+    if (i) {
+        console.log(`--------------------------------------------------
+userId   : ${i.id}
+username : ${i.username}
+--------------------------------------------------`);
+    }
 };
