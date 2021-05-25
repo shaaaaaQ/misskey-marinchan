@@ -1,9 +1,10 @@
 const { Note } = require('../misskey');
 
-module.exports = function (data) {
+module.exports = async function (data) {
     const note = new Note(this, data);
+    const user = await note.user;
 
-    if (note.user.isBot || !note.text) return;
+    if (user.isBot || !note.text) return;
 
     console.log(`ノートを受信 > ${note.text}`);
 

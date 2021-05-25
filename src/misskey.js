@@ -71,15 +71,18 @@ class Note {
     }
 
     get user() {
-        return this.data && this.data.user && new User(this.api, this.data.user);
+        if (!this._user) this._user = this.data?.userId && this._getUser();
+        return this._user;
     }
 
     get createdAt() {
-        return this.data && this.data.createdAt && new Date(this.data.createdAt);
+        if (!this._createdAt) this._createdAt = this.data?.createdAt && new Date(this.data.createdAt);
+        return this._createdAt;
     }
 
     get channel() {
-        return this.data && this.data.channel && this.data.channel.id && this._getChannel();
+        if (!this._channel) this._channel = this.data?.channel?.id && this._getChannel();
+        return this._channel;
     }
 
     renote(params) {
@@ -118,6 +121,10 @@ class Note {
     async _getChannel() {
         return new Channel(this.api, await this.api.post('channels/show', { channelId: this.data.channel.id }));
     }
+
+    async _getUser() {
+        return new User(this.api, await this.api.post('users/show', { userId: this.data.userId }));
+    }
 }
 
 class User {
@@ -133,6 +140,8 @@ class User {
             this.isModerator = data.isModerator;
             this.isBot = data.isBot;
             this.isCat = data.isCat;
+            this.isFollowing = data.isFollowing;
+            this.isFollowed = data.isFollowed;
         }
     }
 
