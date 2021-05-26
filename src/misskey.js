@@ -70,19 +70,8 @@ class Note {
         }
     }
 
-    get user() {
-        if (!this._user) this._user = this.data?.userId && this._getUser();
-        return this._user;
-    }
-
     get createdAt() {
-        if (!this._createdAt) this._createdAt = this.data?.createdAt && new Date(this.data.createdAt);
-        return this._createdAt;
-    }
-
-    get channel() {
-        if (!this._channel) this._channel = this.data?.channel?.id && this._getChannel();
-        return this._channel;
+        return this.data?.createdAt && new Date(this.data.createdAt);
     }
 
     renote(params) {
@@ -118,12 +107,12 @@ class Note {
         });
     }
 
-    async _getChannel() {
-        return new Channel(this.api, await this.api.post('channels/show', { channelId: this.data.channel.id }));
+    async getChannel() {
+        return this.data?.channel?.id && new Channel(this.api, await this.api.post('channels/show', { channelId: this.data.channel.id }));
     }
 
-    async _getUser() {
-        return new User(this.api, await this.api.post('users/show', { userId: this.data.userId }));
+    async getUser() {
+        return this.data?.userId && new User(this.api, await this.api.post('users/show', { userId: this.data.userId }));
     }
 }
 
