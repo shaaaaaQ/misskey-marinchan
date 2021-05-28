@@ -2,9 +2,8 @@ const { Note } = require('../misskey');
 
 module.exports = async function (data) {
     const note = new Note(this, data);
-    const isBot = note.data?.user?.isBot;
 
-    if (isBot || !note.text) return;
+    if (note.data?.user?.isBot || !note.text) return;
 
     console.log(`ノートを受信 > ${note.text}`);
 
@@ -138,6 +137,10 @@ module.exports = async function (data) {
                     break;
                 }
             }
+            break;
+        }
+        case /月|moon/i.test(note.text) && !/[0-9０-９一二三四五六七八九十睦如卯皐無文葉長霜先来]月/i.test(note.text): {
+            note.reply({ text: '何万光年も先にある星って、今はもう消滅してるかもしれないのに地球では光って見えるのロマンあるな。' });
             break;
         }
         case /はい。/i.test(note.text) && !/はいい|はいはい/i.test(note.text): {

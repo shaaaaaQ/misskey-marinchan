@@ -37,6 +37,11 @@ class Api extends EventEmitter {
         });
     }
 
+    send(data) {
+        if (!('_ws' in this)) return;
+        this._ws.send(JSON.stringify(data));
+    }
+
     post(endpoint, params) {
         return axios.post(`${this.url}/api/${endpoint}`, {
             i: this.i,
@@ -47,13 +52,14 @@ class Api extends EventEmitter {
     }
 
     connect(channel) {
-        this._ws.send(JSON.stringify({
+        if (!('_ws' in this)) return;
+        this.send({
             type: 'connect',
             body: {
                 channel: channel,
                 id: this.id[channel]
             }
-        }));
+        });
     }
 }
 
