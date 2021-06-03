@@ -171,11 +171,11 @@ module.exports = async function (data) {
             note.react(':brave:');
             break;
         }
-        case /twitter/i.test(note.text): {
+        case /twitter/i.test(note.text) && !/http/i.test(note.text): {
             note.react(':twitter:');
             break;
         }
-        case /misskey/i.test(note.text): {
+        case /misskey/i.test(note.text) && !/http/i.test(note.text): {
             note.react(':misskey:');
             break;
         }
@@ -199,7 +199,7 @@ module.exports = async function (data) {
             note.react(':xiaomi:');
             break;
         }
-        case /youtube/i.test(note.text): {
+        case /youtube/i.test(note.text) && !/http/i.test(note.text): {
             note.react(':youtube:');
             break;
         }
