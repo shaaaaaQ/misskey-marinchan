@@ -147,7 +147,7 @@ module.exports = async function (data) {
             note.reply({ text: 'はい。' });
             break;
         }
-        case /seppuku|切腹/i.test(note.text): {
+        case /seppuku|切腹/i.test(note.text) && !note.data?.mentions: {
             note.react(':seppuku:');
             break;
         }
@@ -175,7 +175,7 @@ module.exports = async function (data) {
             note.react(':twitter:');
             break;
         }
-        case /misskey/i.test(note.text) && !/http/i.test(note.text): {
+        case /misskey/i.test(note.text) && !/http/i.test(note.text) && !note.data?.mentions: {
             note.react(':misskey:');
             break;
         }

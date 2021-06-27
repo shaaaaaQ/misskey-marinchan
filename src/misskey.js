@@ -14,10 +14,7 @@ class Api extends EventEmitter {
         if ('_ws' in this) return;
 
         this._ws = new WebSocket(`${this.url.replace('http', 'ws')}/streaming?i=${this.i}`);
-        this.id = {
-            homeTimeline: v4(),
-            main: v4()
-        };
+        this.id = {};
 
         this._ws.on('open', () => {
             this.emit('open');
@@ -53,6 +50,7 @@ class Api extends EventEmitter {
 
     connect(channel) {
         if (!('_ws' in this)) return;
+        this.id[channel] = v4();
         this.send({
             type: 'connect',
             body: {
