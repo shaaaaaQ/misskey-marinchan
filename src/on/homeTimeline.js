@@ -139,10 +139,6 @@ module.exports = async function (data) {
             }
             break;
         }
-        case /月|moon/i.test(note.text) && !/[0-9０-９一二三四五六七八九十睦如卯皐無文葉長霜先来]月/i.test(note.text): {
-            note.reply({ text: '何万光年も先にある星って、今はもう消滅してるかもしれないのに地球では光って見えるのロマンあるな。' });
-            break;
-        }
         case /はい。/i.test(note.text) && !/はいい|はいはい/i.test(note.text): {
             note.reply({ text: 'はい。' });
             break;
@@ -218,6 +214,10 @@ module.exports = async function (data) {
         case note.text === 'お': {
             note.react(':o:');
             if (Math.floor(Math.random() * 10) === 0) note.renote();
+            break;
+        }
+        case note.text === '月': {
+            note.reply({ text: '何万光年も先にある星って、今はもう消滅してるかもしれないのに地球では光って見えるのロマンあるな。' });
             break;
         }
         case note.text === 'うう': {
