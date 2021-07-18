@@ -13,8 +13,9 @@ class Api extends EventEmitter {
     run() {
         if ('_ws' in this) return;
 
-        this._ws = new WebSocket(`${this.url.replace('http', 'ws')}/streaming?i=${this.i}`);
         this.id = {};
+
+        this._ws = new WebSocket(`${this.url.replace('http', 'ws')}/streaming?i=${this.i}`);
 
         this._ws.on('open', () => {
             this.emit('open');
@@ -50,7 +51,7 @@ class Api extends EventEmitter {
 
     connect(channel) {
         if (!('_ws' in this)) return;
-        this.id[channel] = v4();
+        if (!this.id[channel]) this.id[channel] = v4();
         this.send({
             type: 'connect',
             body: {
@@ -58,6 +59,18 @@ class Api extends EventEmitter {
                 id: this.id[channel]
             }
         });
+    }
+
+    disconnect(channel) {
+        if (!('_ws' in this)) return;
+        if (this.id[channel]) {
+            this.send({
+                type: 'disconnect',
+                body: {
+                    id: this.id[channel]
+                }
+            });
+        }
     }
 }
 
@@ -111,11 +124,11 @@ class Note {
         });
     }
 
-    async getChannel() {
+    async fetchChannel() {
         return this.data?.channel?.id && new Channel(this.api, await this.api.post('channels/show', { channelId: this.data.channel.id }));
     }
 
-    async getUser() {
+    async fetchUser() {
         return this.data?.userId && new User(this.api, await this.api.post('users/show', { userId: this.data.userId }));
     }
 }

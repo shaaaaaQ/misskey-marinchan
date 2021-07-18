@@ -29,9 +29,3 @@ kaihatsuChannels.forEach(ch => {
         channel.follow();
     }
 });
-```
-TLから流れてきたノートのチャンネルを取得するとき
-```javascript
-const note = new Note(a, data);
-console.log(await note.channel);
-```
