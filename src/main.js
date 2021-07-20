@@ -1,14 +1,13 @@
+const fs = require('fs');
 const { Api } = require('./misskey');
 const config = require('../config.json');
 
 
 const a = new Api(config.url, config.i);
 
-a.on('open', require('./on/open'));
-a.on('homeTimeline', require('./on/homeTimeline'));
-a.on('followed', require('./on/followed'));
-// a.on('mention', require('./on/mention'));
-// a.on('message', require('./on/message'));
-a.on('error', require('./on/error'));
+for (const file of fs.readdirSync(`${__dirname}/events`).filter(file => file.endsWith('.js'))) {
+    const obj = require(`${__dirname}/events/${file}`);
+    obj.disabled ? console.log(`disabled: ${file}`) : a.on(obj.event, obj.listener);
+}
 
 a.run();
