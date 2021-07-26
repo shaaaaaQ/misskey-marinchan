@@ -2,6 +2,7 @@ const { Note } = require('../misskey');
 
 module.exports = {
     event: 'homeTimeline',
+    disabled: false,
     listener: async function (data) {
         const note = new Note(this, data);
 
