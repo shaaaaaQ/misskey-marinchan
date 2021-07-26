@@ -14,6 +14,8 @@ module.exports = {
 
         const i = await this.post('i');
         if (i) {
+            this.username = i.username;
+            this.userId = i.id;
             console.log('<アカウント情報>');
             console.log(` username : ${i.username}`);
             console.log(` userId   : ${i.id}`);

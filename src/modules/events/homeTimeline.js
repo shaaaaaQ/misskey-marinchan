@@ -1,4 +1,4 @@
-const { Note } = require('../misskey');
+const { Note } = require('../../misskey');
 
 module.exports = {
     event: 'homeTimeline',

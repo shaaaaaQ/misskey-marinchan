@@ -1,4 +1,4 @@
-const { User } = require('../misskey');
+const { User } = require('../../misskey');
 
 module.exports = {
     event: 'followed',
