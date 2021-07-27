@@ -157,7 +157,7 @@ class User {
         });
     }
 
-    deleteFollow() {
+    unfollow() {
         return this.api.post('following/delete', {
             userId: this.id
         });
