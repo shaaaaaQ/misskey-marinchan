@@ -1,5 +1,4 @@
 const { Note } = require('../../misskey');
-const { format } = require('date-fns');
 
 module.exports = {
     event: 'homeTimeline',
@@ -49,7 +48,7 @@ module.exports = {
                         break;
                     }
                     case /今何時/i.test(note.text): {
-                        note.reply({ text: `${format(new Date(), 'HH時')}よ！` });
+                        note.reply({ text: `${new Date().getHours()}時よ！` });
                         break;
                     }
                     case /じゃんけんしよ/i.test(note.text): {
