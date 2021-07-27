@@ -1,9 +1,7 @@
 const cjp = require('cjp');
 
 const texts = [
-    'うう',
-    'てすと',
-    () => { return `今日は${new Date().getDate()}日`; }
+    'うう'
 ];
 
 module.exports = {
