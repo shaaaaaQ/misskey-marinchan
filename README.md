@@ -1,4 +1,4 @@
-## Misskey用のBot(作りかけ)
+## MisskeyのBot(作りかけ)
 
 
 #### 設定
