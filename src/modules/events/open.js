@@ -1,9 +1,6 @@
 module.exports = {
     event: 'open',
     listener: async function () {
-        this.connect('homeTimeline');
-        this.connect('main');
-
         console.log('--------------------------------------------------');
         const meta = await this.post('meta');
         if (meta) {

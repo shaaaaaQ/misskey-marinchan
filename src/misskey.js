@@ -10,29 +10,67 @@ class Api extends EventEmitter {
         this.i = i;
     }
 
+    _emit(name, ...args) {
+        try {
+            this.emit(name, ...args);
+        } catch (e) {
+            this.emit('error', e);
+        }
+    }
+
     run() {
         if ('_ws' in this) return;
 
-        this.id = {};
+        const conn = {
+            homeTimeline: v4(),
+            main: v4()
+        };
 
-        this._ws = new WebSocket(`${this.url.replace('http', 'ws')}/streaming?i=${this.i}`);
+        const _connect = () => {
+            this._ws = new WebSocket(`${this.url.replace('http', 'ws')}/streaming?i=${this.i}`);
 
-        this._ws.on('open', () => {
-            this.emit('open');
-        });
+            this._ws.on('open', () => {
+                console.log('ws: open');
 
-        this._ws.on('message', (json) => {
-            const data = JSON.parse(json);
-            this.emit('message', data);
-            if (!data.body) return;
-            if (data.body.error) return this.emit('error', data.body.error);
-            if (data.type === 'channel') {
-                switch (data.body.id) {
-                    case this.id.homeTimeline: return this.emit('homeTimeline', data.body.body);
-                    case this.id.main: return this.emit(data.body.type, data.body.body);
+                Object.keys(conn).forEach(c => {
+                    this.send({
+                        type: 'connect',
+                        body: {
+                            channel: c,
+                            id: conn[c]
+                        }
+                    });
+                });
+
+                // 再接続したときはここまで
+                if (this.isConnected) return;
+
+                this._emit('open');
+                this.isConnected = true;
+            });
+
+            this._ws.on('message', (json) => {
+                const data = JSON.parse(json);
+                this._emit('message', data);
+                if (!data.body) return;
+                if (data.body.error) return this._emit('error', data.body.error);
+                if (data.type === 'channel') {
+                    switch (data.body.id) {
+                        case conn.homeTimeline: return this._emit('homeTimeline', data.body.body);
+                        case conn.main: return this._emit(data.body.type, data.body.body);
+                    }
                 }
-            }
-        });
+            });
+
+            this._ws.on('close', () => {
+                console.log('ws: close');
+                this._ws.removeAllListeners();
+
+                // 再接続する
+                _connect();
+            });
+        };
+        _connect();
     }
 
     send(data) {
@@ -47,30 +85,6 @@ class Api extends EventEmitter {
         })
             .then((res) => { return res.data; })
             .catch(() => { return; });
-    }
-
-    connect(channel) {
-        if (!('_ws' in this)) return;
-        if (!this.id[channel]) this.id[channel] = v4();
-        this.send({
-            type: 'connect',
-            body: {
-                channel: channel,
-                id: this.id[channel]
-            }
-        });
-    }
-
-    disconnect(channel) {
-        if (!('_ws' in this)) return;
-        if (this.id[channel]) {
-            this.send({
-                type: 'disconnect',
-                body: {
-                    id: this.id[channel]
-                }
-            });
-        }
     }
 }
 
@@ -88,7 +102,9 @@ class Note {
     }
 
     get createdAt() {
-        return this.data?.createdAt && new Date(this.data.createdAt);
+        const date = this.data?.createdAt && new Date(this.data.createdAt);
+        if (!date) throw new Error('ノートを作成した時間取得できなかった');
+        return date;
     }
 
     renote(params) {
@@ -125,11 +141,15 @@ class Note {
     }
 
     async fetchChannel() {
-        return this.data?.channel?.id && new Channel(this.api, await this.api.post('channels/show', { channelId: this.data.channel.id }));
+        const channel = await this.api.post('channels/show', { channelId: this.data?.channel?.id });
+        if (!channel) throw 'チャンネル取得できなかった';
+        return new Channel(this.api, channel);
     }
 
     async fetchUser() {
-        return this.data?.userId && new User(this.api, await this.api.post('users/show', { userId: this.data.userId }));
+        const user = await this.api.post('users/show', { userId: this.data?.userId });
+        if (!user) throw 'ユーザー取得できなかった';
+        return new User(this.api, user);
     }
 }
 
