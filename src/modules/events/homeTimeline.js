@@ -1,12 +1,17 @@
 const { Note } = require('../../misskey');
 
+function checkMention(arr, id) {
+    const res = arr && id && !arr.includes(id);
+    return !res;
+}
+
 module.exports = {
     event: 'homeTimeline',
     disabled: false,
     listener: async function (data) {
         const note = new Note(this, data);
 
-        if (note.data?.user?.isBot || !note.text) return;
+        if (note.data?.user?.isBot || !note.text || !checkMention(note.data?.mentions, this.userId)) return;
 
         console.log(`ノートを受信 > ${note.text}`);
 
