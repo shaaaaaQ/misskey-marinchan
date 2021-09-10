@@ -12,6 +12,7 @@ class Api extends EventEmitter {
 
     _emit(name, ...args) {
         try {
+            // console.log(name);
             this.emit(name, ...args);
         } catch (e) {
             this.emit('error', e);
@@ -103,7 +104,7 @@ class Note {
 
     get createdAt() {
         const date = this.data?.createdAt && new Date(this.data.createdAt);
-        if (!date) throw new Error('ノートを作成した時間取得できなかった');
+        if (!date) throw 'ノートを作成した時間わからなかった';
         return date;
     }
 

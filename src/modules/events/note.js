@@ -1,7 +1,17 @@
 const cjp = require('cjp');
 
 const texts = [
-    'うう'
+    'うう',
+    'お',
+
+    () => {
+        const hour = new Date().getHours();
+        switch (true) {
+            case 4 <= hour && hour < 11: return 'おはようございます…むにゃむにゃ……';
+            case 11 <= hour && hour < 18: return 'こんにちは！(\\*^_^*)';
+            case 18 <= hour || hour < 4: return 'こんばんは〜(\\*^_^*)';
+        }
+    }
 ];
 
 module.exports = {
