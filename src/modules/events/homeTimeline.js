@@ -45,13 +45,13 @@ module.exports = {
                 const hand = note.text.split(/ +/)[1];
                 switch (hand) {
                     case 'グー':
-                        note.reply({ text: 'パー\n\n私の勝ち！なんで負けたか、明日まで考えといてください^^' });
+                        note.reply({ text: 'パー\n\n私の勝ち！なんで負けたか、明日まで考えといてください ^^' });
                         break;
                     case 'チョキ':
-                        note.reply({ text: 'グー\n\n私の勝ち！なんで負けたか、明日まで考えといてください^^' });
+                        note.reply({ text: 'グー\n\n私の勝ち！なんで負けたか、明日まで考えといてください ^^' });
                         break;
                     case 'パー':
-                        note.reply({ text: 'チョキ\n\n私の勝ち！なんで負けたか、明日まで考えといてください^^' });
+                        note.reply({ text: 'チョキ\n\n私の勝ち！なんで負けたか、明日まで考えといてください ^^' });
                         break;
                     default:
                         note.reply({ text: 'ごめん！まだ整備中なの！ ><' });
