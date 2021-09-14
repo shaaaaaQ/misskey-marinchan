@@ -41,8 +41,22 @@ module.exports = {
                 note.reply({ text: 'おやすみ〜〜' });
                 break;
             }
-            case /まりんとじゃんけん/i.test(note.text): {
-                note.reply({ text: 'ごめん！まだ整備中なの！ ><' });
+            case note.text.startsWith('まりんとじゃんけん'): {
+                const hand = note.text.split(/ +/)[1];
+                switch (hand) {
+                    case 'グー':
+                        note.reply({ text: 'パー\n\n私の勝ち！なんで負けたか、明日まで考えといてください^^' });
+                        break;
+                    case 'チョキ':
+                        note.reply({ text: 'グー\n\n私の勝ち！なんで負けたか、明日まで考えといてください^^' });
+                        break;
+                    case 'パー':
+                        note.reply({ text: 'チョキ\n\n私の勝ち！なんで負けたか、明日まで考えといてください^^' });
+                        break;
+                    default:
+                        note.reply({ text: 'ごめん！まだ整備中なの！ ><' });
+                        break;
+                }
                 break;
             }
             case /まりん/i.test(note.text) && !/しまりん|クソまりん|さぶまりん/i.test(note.text): {
