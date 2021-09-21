@@ -169,6 +169,14 @@ module.exports = {
                 note.reply({ text: 'はい。' });
                 break;
             }
+            case /:cloudflare:/i.test(note.text): {
+                note.react(':soundcloud:');
+                break;
+            }
+            case /:soundcloud:/i.test(note.text): {
+                note.react(':cloudflare:');
+                break;
+            }
             case /seppuku|切腹/i.test(note.text) && !note.data?.mentions: {
                 note.react(':seppuku:');
                 break;
