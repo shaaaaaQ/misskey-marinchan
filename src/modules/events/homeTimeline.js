@@ -1,4 +1,5 @@
 const { Note } = require('../../misskey');
+const { format } = require('date-fns');
 
 function checkMention(arr, id) {
     const res = arr && id && !arr.includes(id);
@@ -243,6 +244,10 @@ module.exports = {
             }
             case /334/i.test(note.text): {
                 note.react(':334:');
+                if (note.text === '334' && note.createdAt) {
+                    const date = new Date(note.createdAt);
+                    note.reply({ text: format(date, 'HH:mm:ss.SSSS') });
+                }
                 break;
             }
             case note.text === 'お': {
