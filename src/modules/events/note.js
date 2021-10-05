@@ -3,6 +3,7 @@ const cjp = require('cjp');
 const texts = [
     'うう',
     'お',
+    ':seppuku:',
 
     () => {
         const hour = new Date().getHours();
