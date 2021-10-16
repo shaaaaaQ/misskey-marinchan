@@ -250,7 +250,7 @@ module.exports = {
                 }
                 break;
             }
-            case note.text === 'お': {
+            case note.text === 'お' || note.text === ':o:': {
                 note.react(':o:');
                 if (Math.floor(Math.random() * 10) === 0) note.renote();
                 break;
