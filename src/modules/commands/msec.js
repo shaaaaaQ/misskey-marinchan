@@ -8,7 +8,7 @@ module.exports = {
         const date = new Date(note.createdAt);
         api.post('notes/create', {
             replyId: data.id,
-            text: format(date, 'HH:mm:ss.SSSS')
+            text: format(date, 'HH:mm:ss.SSS')
         });
     }
 };

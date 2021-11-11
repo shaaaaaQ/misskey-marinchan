@@ -246,7 +246,7 @@ module.exports = {
                 note.react(':334:');
                 if (note.text === '334' && note.createdAt) {
                     const date = new Date(note.createdAt);
-                    note.reply({ text: format(date, 'HH:mm:ss.SSSS') });
+                    note.reply({ text: format(date, 'HH:mm:ss.SSS') });
                 }
                 break;
             }
