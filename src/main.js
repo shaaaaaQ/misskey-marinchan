@@ -1,13 +1,17 @@
 const fs = require('fs');
-const { Api } = require('./misskey');
-const config = require('../config.json');
+const { stream } = require('./misskey');
 
+fs.readdirSync(`${__dirname}/stream`).filter(file => file.endsWith('.js')).forEach((filename) => {
+    const event = require(`${__dirname}/stream/${filename}`);
+    if (event.disabled) return console.log(`Disabled: ${filename}`);
 
-const a = new Api(config.url, config.i);
+    stream.on(event.event, event.listener);
+});
 
-for (const file of fs.readdirSync(`${__dirname}/modules/events`).filter(file => file.endsWith('.js'))) {
-    const obj = require(`${__dirname}/modules/events/${file}`);
-    obj.disabled ? console.log(`disabled: ${file}`) : a.on(obj.event, obj.listener);
-}
+fs.readdirSync(`${__dirname}/channel`).filter(file => file.endsWith('.js')).forEach((filename) => {
+    const event = require(`${__dirname}/channel/${filename}`);
+    if (event.disabled) return console.log(`Disabled: ${filename}`);
 
-a.run();
+    const channel = stream.useChannel(event.channel);
+    channel.on(event.event, event.listener);
+});
