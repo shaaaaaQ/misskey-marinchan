@@ -1,5 +1,6 @@
 {
-  "name": "msk-marin-bot",
+  "private": "true",
+  "name": "misskey-marinchan",
   "version": "0.0.1",
   "description": "",
   "main": "src/main.js",
