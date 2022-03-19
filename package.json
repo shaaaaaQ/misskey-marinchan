@@ -9,6 +9,7 @@
   "dependencies": {
     "cjp": "^1.2.3",
     "date-fns": "^2.23.0",
+    "mfm-js": "^0.21.0",
     "misskey-js": "^0.0.14",
     "node-fetch": "^2.6.7",
     "ws": "^8.5.0"

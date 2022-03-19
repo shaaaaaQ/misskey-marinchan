@@ -1,4 +1,5 @@
 const { format } = require('date-fns');
+const mfm = require('mfm-js');
 const { api } = require('../misskey');
 
 function react(noteId, reaction) {
@@ -22,6 +23,13 @@ module.exports = {
     listener: async function(note) {
         if (note.user?.isBot || !note.text) return;
         console.log(`ノートを受信 > ${note.text}`);
+
+        // URLとメンションを削除
+        let nodes = mfm.parse(note.text);
+        nodes = mfm.extract(nodes, (node) => {
+            return node.type !== 'url' && node.type !== 'mention';
+        });
+        note.text = mfm.toString(nodes);
 
         switch (true) {
             case /ping/i.test(note.text): {
