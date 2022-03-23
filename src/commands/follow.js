@@ -1,9 +1,10 @@
 const { api } = require('../misskey');
 
 module.exports = {
-    name: 'unfollow',
+    name: 'follow',
+    aliases: ['フォロー', 'フォローして'],
     async run(note) {
-        api.request('following/delete', {
+        api.request('following/create', {
             userId: note.user.id
         }).catch(() => { });
     }

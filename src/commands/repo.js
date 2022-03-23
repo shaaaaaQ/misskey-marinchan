@@ -1,9 +1,11 @@
+const { api } = require('../misskey');
+
 module.exports = {
     name: 'repo',
     aliases: ['github', 'repository'],
-    run(api, data) {
-        api.post('notes/create', {
-            replyId: data.id,
+    run(note) {
+        api.request('notes/create', {
+            replyId: note.id,
             text: 'https://github.com/shaaaaaQ/msk-marinchan'
         });
     }

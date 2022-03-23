@@ -16,21 +16,25 @@ const texts = [
     }
 ];
 
-function createNote() {
+function createNote(text) {
+    api.request('notes/create', { visibility: 'home', text: text });
+}
+
+function post() {
     let text = texts[Math.floor(Math.random() * texts.length)];
     if (typeof text === 'function') text = text();
     if (Math.floor(Math.random() * 5) === 0) text = cjp.generate(text);
 
-    api.request('notes/create', { visibility: 'home', text: text });
+    createNote(text);
 }
 
 setInterval(() => {
-    createNote();
+    post();
 }, 1000 * 60 * 60);
 
 module.exports = {
     event: '_connected_',
     listener: function() {
-        createNote();
+        createNote('起動');
     }
 };
