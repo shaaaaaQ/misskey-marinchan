@@ -266,6 +266,11 @@ module.exports = {
                 }
                 break;
             }
+            case note.text === '264': {
+                const date = new Date(note.createdAt);
+                reply(note.id, format(date, 'HH:mm:ss.SSS'));
+                break;
+            }
             case note.text === 'お' || note.text === ':o:': {
                 react(note.id, ':o:');
                 //if (Math.floor(Math.random() * 10) === 0) renote(note.id);
