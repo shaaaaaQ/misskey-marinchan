@@ -35,6 +35,6 @@ setInterval(() => {
 module.exports = {
     event: '_connected_',
     listener: function() {
-        createNote('起動');
+        createNote('お');
     }
 };
