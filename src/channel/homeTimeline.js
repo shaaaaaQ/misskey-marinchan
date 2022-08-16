@@ -280,6 +280,10 @@ module.exports = {
                 reply(note.id, '何万光年も先にある星って、今はもう消滅してるかもしれないのに地球では光って見えるのロマンあるな。');
                 break;
             }
+            case note.text === '桜': {
+                reply(note.id, '春になると咲く桜の花って、朝には満開だったのに夕方になると散ってしまうのロマンあるな。');
+                break;
+            }
             case note.text === 'うう': {
                 react(note.id, ':rara:');
                 break;
