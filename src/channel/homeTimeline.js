@@ -2,6 +2,8 @@ const { format } = require('date-fns');
 const mfm = require('mfm-js');
 const { api } = require('../misskey');
 
+let i;
+
 function react(noteId, reaction) {
     api.request('notes/reactions/create', {
         noteId: noteId,
@@ -23,6 +25,11 @@ module.exports = {
     listener: async function(note) {
         if (note.user?.isBot || !note.text) return;
         console.log(`ノートを受信 > ${note.text}`);
+
+        if (!i) i = await api.request('i');
+
+        // 他人へのメンションだったら無視
+        if (note.mentions && !note.mentions.includes(i.id)) return;
 
         // URLとメンションを削除
         let nodes = mfm.parse(note.text);

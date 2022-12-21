@@ -3,7 +3,7 @@ const path = require('path');
 const mfm = require('mfm-js');
 const { api } = require('../misskey');
 
-function nya(str) {
+function unya(str) {
     for (const [k, v] of Object.entries({
         'nya': 'na',
         'Nya': 'Na',
@@ -42,12 +42,12 @@ module.exports = {
 
         if (args.length === 0) return api.request('notes/reactions/create', {
             noteId: note.id,
-            reaction: ':marin'
+            reaction: ':marin:'
         });
 
         let commandName = args.shift().toLowerCase();
 
-        if (note.user.isCat) commandName = nya(commandName);
+        if (note.user.isCat) commandName = unya(commandName);
 
         const command = commands.find(obj => obj.name === commandName || obj.aliases && obj.aliases.includes(commandName));
 
