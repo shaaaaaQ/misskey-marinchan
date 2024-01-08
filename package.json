@@ -3,20 +3,17 @@
   "name": "misskey-marinchan",
   "version": "0.0.1",
   "description": "",
-  "main": "src/main.js",
-  "scripts": {
-    "start": "node ."
-  },
+  "main": "dist/main.js",
+  "scripts": {},
   "author": "sh",
   "dependencies": {
     "cjp": "^1.2.3",
     "date-fns": "^2.23.0",
     "mfm-js": "^0.21.0",
-    "misskey-js": "^0.0.14",
-    "node-fetch": "^2.6.7",
-    "ws": "^8.5.0"
+    "misskey-js": "^0.0.14"
   },
   "devDependencies": {
-    "eslint": "^7.31.0"
+    "eslint": "^7.31.0",
+    "typescript": "^5.3.3"
   }
 }
