@@ -21,13 +21,13 @@ function createNote(text: string) {
 }
 
 function pick() {
-    const text = texts[Math.floor(Math.random() * texts.length)]
-    if (typeof text === 'function') return text()
-    return text
+    const text = texts[Math.floor(Math.random() * texts.length)];
+    if (typeof text === 'function') return text();
+    return text;
 }
 
 function post() {
-    let text = pick()
+    let text = pick();
     if (Math.floor(Math.random() * 5) === 0) text = cjp.generate(text);
 
     createNote(text);

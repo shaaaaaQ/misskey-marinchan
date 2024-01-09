@@ -6,7 +6,6 @@ esbuild.build({
     outdir: 'dist',
     platform: 'node',
     format: 'esm',
-    splitting: true,
     banner: {
         js: 'import { createRequire } from \'module\';const require = createRequire(import.meta.url);'
     }

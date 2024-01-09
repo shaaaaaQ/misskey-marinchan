@@ -5,7 +5,7 @@
 ./config.json
 ```json
 {
-    "i": "",
+    "i": "ここにToken",
     "url": "https://msk.seppuku.club"
 }
 ```
