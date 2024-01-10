@@ -9,3 +9,10 @@
     "url": "https://msk.seppuku.club"
 }
 ```
+
+#### 実行
+```bash
+npm run build
+
+npm start
+```

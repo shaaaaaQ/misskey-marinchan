@@ -6,7 +6,9 @@
   "description": "",
   "main": "dist/main.js",
   "scripts": {
-    "start": "node build.js && node ."
+    "start": "node .",
+    "build": "node build.js",
+    "dev": "node build.js && node ."
   },
   "author": "sh",
   "dependencies": {
