@@ -72,7 +72,7 @@ stream.useChannel('homeTimeline').on('note', (note) => {
                     reply(note.id, 'チョキ\n\n私の勝ち！なんで負けたか、明日まで考えといてください ^^');
                     break;
                 default:
-                    reply(note.id, 'ごめん！まだ整備中なの！ ><');
+                    // reply(note.id, 'ごめん！まだ整備中なの！ ><');
                     break;
             }
             break;
