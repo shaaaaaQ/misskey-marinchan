@@ -1,22 +1,29 @@
 {
+  "type": "module",
   "private": "true",
   "name": "misskey-marinchan",
   "version": "0.0.1",
   "description": "",
-  "main": "src/main.js",
+  "main": "dist/main.js",
   "scripts": {
-    "start": "node ."
+    "start": "node .",
+    "build": "node build.js",
+    "dev": "node build.js && node ."
   },
   "author": "sh",
   "dependencies": {
-    "cjp": "^1.2.3",
-    "date-fns": "^2.23.0",
-    "mfm-js": "^0.21.0",
-    "misskey-js": "^0.0.14",
-    "node-fetch": "^2.6.7",
-    "ws": "^8.5.0"
+    "cjp": "^2.3.1",
+    "date-fns": "^3.1.0",
+    "mfm-js": "^0.24.0",
+    "misskey-js": "^0.0.16",
+    "ws": "^8.16.0"
   },
   "devDependencies": {
-    "eslint": "^7.31.0"
+    "@types/ws": "^8.5.10",
+    "@typescript-eslint/eslint-plugin": "^6.18.0",
+    "@typescript-eslint/parser": "^6.18.0",
+    "esbuild": "^0.19.11",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3"
   }
 }

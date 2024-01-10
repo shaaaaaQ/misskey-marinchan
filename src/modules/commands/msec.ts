@@ -1,10 +1,11 @@
-const { format } = require('date-fns');
-const { api } = require('../misskey');
+import { format } from 'date-fns';
+import { api } from '../../misskey';
+import command from '../../command';
 
-module.exports = {
-    name: 'msec',
-    aliases: ['ms'],
-    run(note) {
+command.register(
+    'msec',
+    ['ms'],
+    (note) => {
         const t = note.reply || note;
         const date = new Date(t.createdAt);
         api.request('notes/create', {
@@ -12,4 +13,4 @@ module.exports = {
             text: format(date, 'HH:mm:ss.SSS')
         });
     }
-};
+);

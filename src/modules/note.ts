@@ -1,5 +1,5 @@
-const cjp = require('cjp');
-const { api } = require('../misskey');
+import cjp from 'cjp';
+import { stream, api } from '../misskey';
 
 const texts = [
     'うう',
@@ -11,30 +11,32 @@ const texts = [
         switch (true) {
             case 4 <= hour && hour < 11: return 'おはようございます…むにゃむにゃ……';
             case 11 <= hour && hour < 18: return 'こんにちは！(\\*^_^*)';
-            case 18 <= hour || hour < 4: return 'こんばんは〜(\\*^_^*)';
+            default: return 'こんばんは〜(\\*^_^*)';
         }
     }
 ];
 
-function createNote(text) {
+function createNote(text: string) {
     api.request('notes/create', { visibility: 'home', text: text });
 }
 
+function pick() {
+    const text = texts[Math.floor(Math.random() * texts.length)];
+    if (typeof text === 'function') return text();
+    return text;
+}
+
 function post() {
-    let text = texts[Math.floor(Math.random() * texts.length)];
-    if (typeof text === 'function') text = text();
+    let text = pick();
     if (Math.floor(Math.random() * 5) === 0) text = cjp.generate(text);
 
     createNote(text);
 }
 
-setInterval(() => {
-    post();
-}, 1000 * 60 * 60);
+stream.on('_connected_', () => {
+    createNote('お');
 
-module.exports = {
-    event: '_connected_',
-    listener: function() {
-        createNote('お');
-    }
-};
+    setInterval(() => {
+        post();
+    }, 1000 * 60 * 60);
+});
