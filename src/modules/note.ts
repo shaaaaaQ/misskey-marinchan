@@ -33,10 +33,10 @@ function post() {
     createNote(text);
 }
 
+setInterval(() => {
+    post();
+}, 1000 * 60 * 60);
+
 stream.on('_connected_', () => {
     createNote('お');
-
-    setInterval(() => {
-        post();
-    }, 1000 * 60 * 60);
 });
