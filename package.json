@@ -4,7 +4,7 @@
   "name": "misskey-marinchan",
   "version": "1.1.0",
   "description": "",
-  "main": "dist/main.js",
+  "main": "out/main.js",
   "scripts": {
     "start": "node .",
     "build": "node build.js",

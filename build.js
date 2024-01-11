@@ -3,7 +3,7 @@ import esbuild from 'esbuild';
 esbuild.build({
     bundle: true,
     entryPoints: ['src/main.ts'],
-    outdir: 'dist',
+    outdir: 'out',
     platform: 'node',
     format: 'esm',
     banner: {
