@@ -9,3 +9,4 @@ import './modules/commands/msec';
 import './modules/commands/repo';
 import './modules/commands/follow';
 import './modules/commands/unfollow';
+import './modules/commands/status';

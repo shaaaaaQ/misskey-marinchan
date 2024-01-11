@@ -1,5 +1,5 @@
 import cjp from 'cjp';
-import { stream, api } from '../misskey';
+import { api } from '../misskey';
 
 const texts = [
     'うう',
@@ -37,6 +37,4 @@ setInterval(() => {
     post();
 }, 1000 * 60 * 60);
 
-stream.on('_connected_', () => {
-    createNote('お');
-});
+createNote('起動');
