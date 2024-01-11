@@ -40,5 +40,5 @@ stream.useChannel('main').on('mention', (note) => {
 
     if (note.user.isCat) commandName = unya(commandName);
 
-    command.get(commandName)?.run(note);
+    command.get(commandName)?.run(note, args);
 });

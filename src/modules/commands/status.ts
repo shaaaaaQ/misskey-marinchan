@@ -8,6 +8,7 @@ const startDate = new Date();
 command.register(
     'status',
     ['uptime', 'version'],
+    '起動時間とかバージョンとか表示',
     (note) => {
         const now = new Date();
         api.request('notes/create', {
